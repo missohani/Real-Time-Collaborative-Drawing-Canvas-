@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-Time Collaborative Drawing Canvas</title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      canvas {
+        background-color: #ffffff;
+        cursor: crosshair;
+        display: block;
+      }
+      .toolbar {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background-color: #e0e0e0;
+      }
+      .toolbar button {
+        padding: 10px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button onclick="setShape('line')">Line</button>
+      <button onclick="setShape('rectangle')">Rectangle</button>
+      <button onclick="setShape('circle')">Circle</button>
+      <button onclick="setShape('triangle')">Triangle</button>
+      
+    </div>
+    <canvas id="canvas"></canvas>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let currentShape = 'line';
+      let isDrawing = false;
+      let startX, startY, endX, endY;
+      let shapes = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - document.querySelector(".toolbar").offsetHeight;
+        redraw();
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      function setShape(shape) {
+        currentShape = shape;
+      }
+
+      canvas.addEventListener("mousedown", (e) => {
+        startX = e.clientX;
+        startY = e.clientY - document.querySelector(".toolbar").offsetHeight;
+        isDrawing = true;
+      });
+
+      canvas.addEventListener("mousemove", (e) => {
+        if (!isDrawing) return;
+        endX = e.clientX;
+        endY = e.clientY - document.querySelector(".toolbar").offsetHeight;
+        redraw();
+        drawShape(startX, startY, endX, endY, currentShape, ctx, false);
+      });
+
+      canvas.addEventListener("mouseup", (e) => {
+        if (!isDrawing) return;
+        endX = e.clientX;
+        endY = e.clientY - document.querySelector(".toolbar").offsetHeight;
+        isDrawing = false;
+        shapes.push({
+          type: currentShape,
+          startX, startY, endX, endY
+        });
+        redraw();
+      });
+
+      function redraw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let shape of shapes) {
+          drawShape(shape.startX, shape.startY, shape.endX, shape.endY, shape.type, ctx, true);
+        }
+      }
+
+      function drawShape(sx, sy, ex, ey, type, ctx, persist) {
+        ctx.save();
+        ctx.strokeStyle = "#222";
+        ctx.lineWidth = 2;
+        if (type === "line") {
+          ctx.beginPath();
+          ctx.moveTo(sx, sy);
+          ctx.lineTo(ex, ey);
+          ctx.stroke();
+        } else if (type === "rectangle") {
+          ctx.strokeRect(sx, sy, ex - sx, ey - sy);
+        } else if (type === "circle") {
+          const cx = (sx + ex) / 2;
+          const cy = (sy + ey) / 2;
+          const rx = Math.abs((ex - sx) / 2);
+          const ry = Math.abs((ey - sy) / 2);
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+          ctx.stroke();
+        } else if (type === "triangle") {
+          ctx.beginPath();
+          ctx.moveTo(sx, ey);
+          ctx.lineTo((sx + ex) / 2, sy);
+          ctx.lineTo(ex, ey);
+          ctx.closePath();
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    </script>
+  </body>
+</html>
