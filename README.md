@@ -25,3 +25,26 @@ Existing online whiteboard tools often have limitations such as restricted custo
 The application supports real-time drawing, shape creation, and text annotations, allowing multiple users to collaborate within shared rooms. It uses a client-server model, where each client’s actions are transmitted through WebSocket events to ensure immediate updates across all participants.
 Additionally, the platform includes secure user authentication and role-based access control for managing who can edit or view the canvas. Future improvements will focus on advanced tools and enhanced performance for large-scale sessions.
 
+## How to Run the Project Locally
+ Step 1: Clone the Repository
+ git clone https://github.com/missohani/Real-Time-Collaborative-Drawing-Canvas-.git
+
+ Step 2: Go to the Project Directory
+ cd project_root
+
+ Step 3: Install Dependencies
+ npm install
+ npm start
+
+ Step 5: Open the App
+Go to your browser and open:
+ http://localhost:8080
+
+
+## Features
+
+- Real-time collaborative drawing for multiple users
+- Custom brush size and color options
+- Clear canvas for everyone instantly
+- Fast and smooth updates using WebSocket
+- Simple to run locally — no extra setup needed
