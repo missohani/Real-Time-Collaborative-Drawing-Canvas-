@@ -36,7 +36,7 @@ Additionally, the platform includes secure user authentication and role-based ac
  npm install, 
  npm start
 
- Step 5: Open the App
+ Step 4: Open the App
 Go to your browser and open:
  http://localhost:8080
 
