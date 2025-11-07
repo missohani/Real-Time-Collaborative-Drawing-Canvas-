@@ -29,11 +29,11 @@ Additionally, the platform includes secure user authentication and role-based ac
  Step 1: Clone the Repository
  git clone https://github.com/missohani/Real-Time-Collaborative-Drawing-Canvas-.git
 
- Step 2: Go to the Project Directory
+ Step 2: Go to the Project Directory->
  cd project_root
 
- Step 3: Install Dependencies
- npm install
+ Step 3: Install Dependencies->
+ npm install, 
  npm start
 
  Step 5: Open the App
